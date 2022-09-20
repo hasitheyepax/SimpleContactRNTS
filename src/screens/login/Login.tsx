@@ -12,7 +12,7 @@ import * as yup from "yup";
 import { useFormik } from "formik";
 import { InputField } from "../../components";
 import ThemeContext from "../../contexts/ThemeContext";
-import { Theme } from "../../config";
+import { Theme } from "../../config/colors";
 import { HideKeyboard } from "../../components";
 
 const validationSchema = yup.object({

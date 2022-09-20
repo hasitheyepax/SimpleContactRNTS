@@ -4,7 +4,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import { Provider } from "react-redux";
 import { store } from "./src/store/store";
 import { useColorScheme } from "react-native";
-import { lightTheme, darkTheme, Theme } from "./src/config";
+import { lightTheme, darkTheme } from "./src/config";
+import { Theme } from "./src/config/colors";
 import ThemeContext from "./src/contexts/ThemeContext";
 
 const App = () => {
