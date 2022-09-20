@@ -6,9 +6,10 @@ export type ColorsType = {
   text: string;
   border: string;
   notification: string;
+  labelText: string;
 };
 
-type Theme = {
+export type Theme = {
   dark: boolean;
   colors: ColorsType;
 };
@@ -23,6 +24,7 @@ const darkTheme: Theme = {
     text: "#FFF",
     border: "rgb(199, 199, 204)",
     notification: "rgb(255, 69, 58)",
+    labelText: "#f5fee6",
   },
 };
 
@@ -30,12 +32,13 @@ const lightTheme: Theme = {
   dark: false,
   colors: {
     textSub: "#5800FF",
-    primary: "rgb(255, 45, 85)",
-    background: "rgb(242, 242, 242)",
+    primary: "#ef8f8f",
+    background: "#FFF",
     card: "#0096FF",
     text: "rgb(28, 28, 30)",
     border: "rgb(199, 199, 204)",
     notification: "rgb(255, 69, 58)",
+    labelText: "#f5fee6",
   },
 };
 

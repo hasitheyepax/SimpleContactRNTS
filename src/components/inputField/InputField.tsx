@@ -1,7 +1,7 @@
-import React, { FC } from "react";
+import React, { FC, useContext } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
-import { ColorsType } from "../../config/index";
+import { ColorsType, Theme } from "../../config/index";
+import ThemeContext from "../../contexts/ThemeContext";
 
 interface inputFieldProps {
   label: string;
@@ -10,6 +10,7 @@ interface inputFieldProps {
   onChangeText: Function;
   error?: string;
   placeholder: string;
+  disableAutoCapitalize?: boolean;
 }
 
 const InputField: FC<inputFieldProps> = (props): JSX.Element => {
@@ -20,50 +21,60 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
     onChangeText,
     error,
     placeholder,
+    disableAutoCapitalize = false,
   } = props;
-  const { colors, dark } = useTheme();
+
+  const { theme } = useContext(ThemeContext);
+  const styles = themeStyles(theme);
 
   return (
-    <View style={styles(colors).container}>
-      <Text style={styles(colors).labelText}>{label}</Text>
+    <View style={styles.container}>
+      <View style={styles.labelRow}>
+        <Text style={styles.labelText}>{label}</Text>
+        {error ? <Text style={styles.errorText}>{error}</Text> : undefined}
+      </View>
       <TextInput
         value={value}
         onChangeText={(value) => onChangeText(value)}
         secureTextEntry={isPassword}
-        style={styles(colors).inputText}
+        style={styles.inputText}
         placeholder={placeholder}
+        autoCapitalize={disableAutoCapitalize ? "none" : "sentences"}
       />
-      {error ? (
-        <Text style={styles(colors, dark).errorText}>{error}</Text>
-      ) : undefined}
     </View>
   );
 };
 
-const styles = (colors: ColorsType, dark?: boolean) =>
+const themeStyles = (theme: Theme) =>
   StyleSheet.create({
     container: {
-      backgroundColor: colors.background,
+      backgroundColor: theme.colors.primary,
       width: "100%",
-      marginBottom: 20,
-      height: 60,
+      marginBottom: 10,
+      padding: 10,
+      borderRadius: 5,
     },
     labelText: {
-      color: colors.textSub,
+      color: theme.colors.labelText,
       fontSize: 18,
       marginBottom: 10,
+      fontWeight: "bold",
     },
     inputText: {
-      fontSize: 16,
-      color: colors.text,
-      marginLeft: 20,
+      fontSize: 18,
+      color: theme.colors.text,
+      marginHorizontal: 20,
     },
     errorText: {
       fontSize: 12,
-      color: colors.notification,
+      color: theme.colors.textSub,
       textTransform: "capitalize",
-      marginLeft: 20,
-      paddingTop: 5,
+      marginTop: 5,
+      textAlign: "right",
+    },
+    labelRow: {
+      flexDirection: "row",
+      justifyContent: "space-between",
     },
   });
 
