@@ -4,42 +4,45 @@ export type ColorsType = {
   background: string;
   card: string;
   text: string;
-  border: string;
-  notification: string;
   labelText: string;
+  buttonBody: string;
 };
 
 export type Theme = {
   dark: boolean;
   colors: ColorsType;
+  borderRadius: number;
+  verticalMargin: number;
 };
 
 const darkTheme: Theme = {
   dark: true,
   colors: {
-    textSub: "#a7ff00",
+    textSub: "#f8f8f8",
     primary: "rgb(255, 45, 85)",
-    background: "#000",
+    background: "#191970",
     card: "#ff6900",
-    text: "#FFF",
-    border: "rgb(199, 199, 204)",
-    notification: "rgb(255, 69, 58)",
+    text: "#f8f8f8",
     labelText: "#f5fee6",
+    buttonBody: "#00a4ef",
   },
+  borderRadius: 5,
+  verticalMargin: 10,
 };
 
 const lightTheme: Theme = {
   dark: false,
   colors: {
-    textSub: "#5800FF",
+    textSub: "#f8f8f8",
     primary: "#ef8f8f",
-    background: "#FFF",
+    background: "#eddcc8",
     card: "#0096FF",
-    text: "rgb(28, 28, 30)",
-    border: "rgb(199, 199, 204)",
-    notification: "rgb(255, 69, 58)",
+    text: "#f8f8f8",
     labelText: "#f5fee6",
+    buttonBody: "#00a4ef",
   },
+  borderRadius: 5,
+  verticalMargin: 10,
 };
 
 enum navigationScreens {

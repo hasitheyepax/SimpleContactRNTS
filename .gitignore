@@ -127,3 +127,5 @@ dist
 .pnp.*
 
 ios/pods
+android/.gradle
+android/app/build
