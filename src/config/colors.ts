@@ -1,10 +1,3 @@
-export type Theme = {
-  dark: boolean;
-  colors: ColorsType;
-  borderRadius: number;
-  verticalMargin: number;
-};
-
 export type ColorsType = {
   textSub?: string;
   primary: string;
@@ -14,6 +7,13 @@ export type ColorsType = {
   labelText: string;
   buttonBody: string;
   navigatorHeaderBackground: string;
+};
+
+export type Theme = {
+  dark: boolean;
+  colors: ColorsType;
+  borderRadius: number;
+  verticalMargin: number;
 };
 
 const darkTheme: Theme = {
