@@ -3,24 +3,28 @@ import {
   View,
   Text,
   StyleSheet,
-  Button,
   KeyboardAvoidingView,
   Platform,
   Pressable,
 } from "react-native";
 import * as yup from "yup";
 import { useFormik } from "formik";
-import { InputField } from "../../components";
+import { InputField, Button } from "../../components";
 import ThemeContext from "../../contexts/ThemeContext";
 import { Theme } from "../../config/colors";
 import { HideKeyboard } from "../../components";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { AuthStackParamsList } from "../../navigation/Types";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("An email is needed"),
   password: yup.string().required("A password is needed"),
 });
 
-const Login: FC = (): JSX.Element => {
+const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
+  props
+): JSX.Element => {
+  const { navigation } = props;
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
 
@@ -30,15 +34,15 @@ const Login: FC = (): JSX.Element => {
       password: "",
     },
     validationSchema,
+    validateOnChange: true,
+    validateOnMount: false,
     onSubmit: (values) => {
       console.log(values);
     },
-    validateOnChange: true,
-    validateOnMount: false,
   });
 
   const handleRegisterPress: Function = () => {
-    console.log("Navigate to register from here");
+    navigation.navigate("REGISTER");
   };
 
   return (
@@ -70,25 +74,9 @@ const Login: FC = (): JSX.Element => {
           />
         </KeyboardAvoidingView>
         <View style={styles.buttonContainer}>
-          <Pressable
-            onPress={formik.handleSubmit}
-            style={styles.button}
-            android_ripple={{
-              color: theme.colors.card,
-            }}
-          >
-            <Text style={styles.buttonText}>{"Login"}</Text>
-          </Pressable>
+          <Button label={"Login"} onPress={formik.handleSubmit} />
           <View style={styles.margin} />
-          <Pressable
-            onPress={() => handleRegisterPress()}
-            style={styles.button}
-            android_ripple={{
-              color: theme.colors.card,
-            }}
-          >
-            <Text style={styles.buttonText}>{"Register"}</Text>
-          </Pressable>
+          <Button label={"Register"} onPress={handleRegisterPress} />
         </View>
       </View>
     </HideKeyboard>
@@ -122,18 +110,6 @@ const themeStyles = (theme: Theme) =>
     buttonContainer: {
       flex: 2,
       width: "70%",
-    },
-    button: {
-      backgroundColor: theme.colors.buttonBody,
-      alignItems: "center",
-      justifyContent: "center",
-      height: 50,
-      borderRadius: theme.borderRadius,
-    },
-    buttonText: {
-      fontSize: 20,
-      fontWeight: "700",
-      color: theme.colors.labelText,
     },
     margin: {
       height: theme.verticalMargin,

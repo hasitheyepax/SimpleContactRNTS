@@ -1,6 +1,6 @@
 import React, { FC, useContext } from "react";
 import { View, Text, TextInput, StyleSheet } from "react-native";
-import { ColorsType, Theme } from "../../config/index";
+import { Theme } from "../../config/colors";
 import ThemeContext from "../../contexts/ThemeContext";
 
 interface inputFieldProps {

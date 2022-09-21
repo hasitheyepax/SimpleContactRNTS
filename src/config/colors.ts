@@ -13,6 +13,7 @@ export type ColorsType = {
   text: string;
   labelText: string;
   buttonBody: string;
+  navigatorHeaderBackground: string;
 };
 
 const darkTheme: Theme = {
@@ -24,7 +25,8 @@ const darkTheme: Theme = {
     card: "#ff6900",
     text: "#f8f8f8",
     labelText: "#f5fee6",
-    buttonBody: "#00a4ef",
+    buttonBody: "#0032d6",
+    navigatorHeaderBackground: "#0032d6",
   },
   borderRadius: 5,
   verticalMargin: 10,
@@ -40,6 +42,7 @@ const lightTheme: Theme = {
     text: "#333",
     labelText: "#f5fee6",
     buttonBody: "#00a4ef",
+    navigatorHeaderBackground: "#f8f8f8",
   },
   borderRadius: 5,
   verticalMargin: 10,
