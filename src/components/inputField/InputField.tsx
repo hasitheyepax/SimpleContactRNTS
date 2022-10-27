@@ -11,6 +11,7 @@ interface inputFieldProps {
   error?: string;
   placeholder: string;
   disableAutoCapitalize?: boolean;
+  onBlur?: Function;
 }
 
 const InputField: FC<inputFieldProps> = (props): JSX.Element => {
@@ -22,6 +23,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
     error,
     placeholder,
     disableAutoCapitalize = false,
+    onBlur,
   } = props;
 
   const { theme } = useContext(ThemeContext);
@@ -40,6 +42,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
         style={styles.inputText}
         placeholder={placeholder}
         autoCapitalize={disableAutoCapitalize ? "none" : "sentences"}
+        onBlur={(e) => onBlur?.(e)}
       />
     </View>
   );

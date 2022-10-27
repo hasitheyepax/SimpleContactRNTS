@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 import * as yup from "yup";
-import { useFormik } from "formik";
+import { Formik } from "formik";
 import { InputField, Button } from "../../components";
 import ThemeContext from "../../contexts/ThemeContext";
 import { Theme } from "../../config/colors";
@@ -28,19 +28,6 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
 
-  const formik = useFormik({
-    initialValues: {
-      email: "",
-      password: "",
-    },
-    validationSchema,
-    validateOnChange: true,
-    validateOnMount: false,
-    onSubmit: (values) => {
-      console.log(values);
-    },
-  });
-
   const handleRegisterPress: Function = () => {
     navigation.navigate("REGISTER");
   };
@@ -51,33 +38,64 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
         <View style={styles.headerContainer}>
           <Text style={styles.headerText}>{"🪙 Coin Trick"}</Text>
         </View>
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.inputContainer}
+        <Formik
+          initialValues={{
+            email: "",
+            password: "",
+          }}
+          validationSchema={validationSchema}
+          onSubmit={() => {
+            console.log("submit");
+          }}
         >
-          <InputField
-            label={"Email"}
-            value={formik.values.email}
-            isPassword={false}
-            onChangeText={formik.handleChange("email")}
-            error={formik.errors.email}
-            placeholder={"Your email address"}
-            disableAutoCapitalize
-          />
-          <InputField
-            label={"Password"}
-            value={formik.values.password}
-            isPassword={true}
-            onChangeText={formik.handleChange("password")}
-            error={formik.errors.password}
-            placeholder={"Enter your password"}
-          />
-        </KeyboardAvoidingView>
-        <View style={styles.buttonContainer}>
-          <Button label={"Login"} onPress={formik.handleSubmit} />
-          <View style={styles.margin} />
-          <Button label={"Register"} onPress={handleRegisterPress} />
-        </View>
+          {({
+            values,
+            errors,
+            handleChange,
+            handleSubmit,
+            handleBlur,
+            touched,
+            resetForm,
+          }) => (
+            <>
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={styles.inputContainer}
+              >
+                <InputField
+                  label={"Email"}
+                  value={values.email}
+                  isPassword={false}
+                  onChangeText={handleChange("email")}
+                  error={touched.email ? errors.email : undefined}
+                  placeholder={"Your email address"}
+                  disableAutoCapitalize
+                  onBlur={handleBlur("email")}
+                />
+                <InputField
+                  label={"Password"}
+                  value={values.password}
+                  isPassword={true}
+                  onChangeText={handleChange("password")}
+                  error={touched.password ? errors.password : undefined}
+                  placeholder={"Enter your password"}
+                  onBlur={handleBlur("password")}
+                />
+              </KeyboardAvoidingView>
+              <View style={styles.buttonContainer}>
+                <Button label={"Login"} onPress={handleSubmit} />
+                <View style={styles.margin} />
+                <Button
+                  label={"Register"}
+                  onPress={() => {
+                    resetForm();
+                    handleRegisterPress();
+                  }}
+                />
+              </View>
+            </>
+          )}
+        </Formik>
       </View>
     </HideKeyboard>
   );
