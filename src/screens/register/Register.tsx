@@ -84,6 +84,7 @@ const Register: FC = (): JSX.Element => {
                 placeholder={"Your email address"}
                 error={touched.email ? errors.email : undefined}
                 onBlur={handleBlur("email")}
+                keyboardType={"email-address"}
               />
               <InputField
                 label={"Password"}

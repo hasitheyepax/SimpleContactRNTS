@@ -1,5 +1,5 @@
 import React, { FC, useContext } from "react";
-import { View, Text, TextInput, StyleSheet } from "react-native";
+import { View, Text, TextInput, StyleSheet, KeyboardType } from "react-native";
 import { Theme } from "../../config/colors";
 import ThemeContext from "../../contexts/ThemeContext";
 
@@ -8,10 +8,11 @@ interface inputFieldProps {
   value: string;
   isPassword: boolean;
   onChangeText: Function;
-  error?: string;
   placeholder: string;
+  error?: string;
   disableAutoCapitalize?: boolean;
   onBlur?: Function;
+  keyboardType?: KeyboardType;
 }
 
 const InputField: FC<inputFieldProps> = (props): JSX.Element => {
@@ -20,10 +21,11 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
     value,
     isPassword = false,
     onChangeText,
-    error,
     placeholder,
+    error,
     disableAutoCapitalize = false,
     onBlur,
+    keyboardType,
   } = props;
 
   const { theme } = useContext(ThemeContext);
@@ -41,8 +43,11 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
         secureTextEntry={isPassword}
         style={styles.inputText}
         placeholder={placeholder}
-        autoCapitalize={disableAutoCapitalize ? "none" : "sentences"}
+        autoCapitalize={
+          disableAutoCapitalize || keyboardType ? "none" : "sentences"
+        }
         onBlur={(e) => onBlur?.(e)}
+        keyboardType={keyboardType}
       />
     </View>
   );

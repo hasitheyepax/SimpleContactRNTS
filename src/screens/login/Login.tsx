@@ -15,7 +15,7 @@ import { HideKeyboard } from "../../components";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamsList } from "../../navigation/Types";
 import { loginCredentialsType } from "../../types/user";
-import { clearAllUsers, getUsers } from "../../helpers/asyncStorage";
+import { getUsers } from "../../helpers/asyncStorage";
 import { useAppDispatch } from "../../store/hooks";
 import { login } from "../../store/slices/authSlice";
 import { Base64 } from "js-base64";
@@ -97,8 +97,8 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
                   onChangeText={handleChange("email")}
                   error={touched.email ? errors.email : undefined}
                   placeholder={"Your email address"}
-                  disableAutoCapitalize
                   onBlur={handleBlur("email")}
+                  keyboardType={"email-address"}
                 />
                 <InputField
                   label={"Password"}
