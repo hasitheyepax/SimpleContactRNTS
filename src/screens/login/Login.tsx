@@ -5,7 +5,6 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
-  Pressable,
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -15,6 +14,11 @@ import { Theme } from "../../config/colors";
 import { HideKeyboard } from "../../components";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { AuthStackParamsList } from "../../navigation/Types";
+import { loginCredentialsType } from "../../types/user";
+import { clearAllUsers, getUsers } from "../../helpers/asyncStorage";
+import { useAppDispatch } from "../../store/hooks";
+import { login } from "../../store/slices/authSlice";
+import { Base64 } from "js-base64";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("An email is needed"),
@@ -26,10 +30,30 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
 ): JSX.Element => {
   const { navigation } = props;
   const { theme } = useContext(ThemeContext);
+  const dispatch = useAppDispatch();
   const styles = themeStyles(theme);
 
   const handleRegisterPress: Function = () => {
     navigation.navigate("REGISTER");
+  };
+
+  const handleLogin = async (credentials: loginCredentialsType) => {
+    const users = await getUsers();
+    if (users) {
+      const result = users.filter((user) => {
+        return (
+          user.email.toLowerCase() === credentials.email.toLowerCase() &&
+          Base64.decode(user.password) === credentials.password
+        );
+      });
+      if (result.length > 0) {
+        dispatch(login());
+      } else {
+        console.log("Not allowed");
+      }
+    } else {
+      console.log("Register a user first");
+    }
   };
 
   return (
@@ -44,8 +68,12 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
             password: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async ({ email, password }) => {
+            const credentials: loginCredentialsType = {
+              email,
+              password,
+            };
+            await handleLogin(credentials);
           }}
         >
           {({

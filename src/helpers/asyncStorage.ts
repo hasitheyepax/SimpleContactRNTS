@@ -1,11 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { ASYNCKEY } from "../config";
-
-type userType = {
-  name: String;
-  email: String;
-  password: string;
-};
+import { userType } from "../types/user";
 
 export const registerUser = async (user: userType) => {
   let users = await getUsers();
@@ -32,5 +27,13 @@ export const setUsers = async (users: [userType]): Promise<boolean> => {
   } catch (error) {
     console.log(error);
     return false;
+  }
+};
+
+export const clearAllUsers = async (): Promise<void> => {
+  try {
+    await AsyncStorage.removeItem(ASYNCKEY);
+  } catch (error) {
+    console.log(error);
   }
 };

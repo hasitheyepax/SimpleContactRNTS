@@ -10,7 +10,10 @@ import ThemeContext from "../../contexts/ThemeContext";
 import { Theme } from "../../config/colors";
 import { Button, InputField } from "../../components";
 import * as yup from "yup";
-import { Formik, FormikHelpers, FormikValues, useFormik } from "formik";
+import { Formik } from "formik";
+import { userType } from "../../types/user";
+import { registerUser } from "../../helpers/asyncStorage";
+import { Base64 } from "js-base64";
 
 const validationSchema = yup.object({
   name: yup.string().required("Name is required"),
@@ -22,6 +25,11 @@ const validationSchema = yup.object({
 const Register: FC = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
+
+  const handleUserRegistration = async (user: userType): Promise<void> => {
+    const status = await registerUser(user);
+    console.log(status);
+  };
 
   return (
     <KeyboardAvoidingView
@@ -40,8 +48,14 @@ const Register: FC = (): JSX.Element => {
             passwordVerify: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={(values) => {
-            console.log(values);
+          onSubmit={async (values) => {
+            const user: userType = {
+              name: values.name,
+              email: values.email.toLowerCase(),
+              password: Base64.encode(values.password),
+            };
+            if (values.password === values.passwordVerify)
+              await handleUserRegistration(user);
           }}
         >
           {({
@@ -74,7 +88,7 @@ const Register: FC = (): JSX.Element => {
               <InputField
                 label={"Password"}
                 value={values.password}
-                isPassword={false}
+                isPassword={true}
                 onChangeText={handleChange("password")}
                 placeholder={"Password"}
                 error={touched.password ? errors.password : undefined}
@@ -83,7 +97,7 @@ const Register: FC = (): JSX.Element => {
               <InputField
                 label={"Verify Password"}
                 value={values.passwordVerify}
-                isPassword={false}
+                isPassword={true}
                 onChangeText={handleChange("passwordVerify")}
                 placeholder={"Password, again"}
                 error={
