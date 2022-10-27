@@ -7,4 +7,6 @@ enum navigationScreens {
   REGISTER = "REGISTER",
 }
 
+export const ASYNCKEY = "COINKEY";
+
 export { lightTheme, darkTheme, navigationScreens };

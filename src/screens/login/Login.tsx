@@ -44,8 +44,8 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
             password: "",
           }}
           validationSchema={validationSchema}
-          onSubmit={() => {
-            console.log("submit");
+          onSubmit={(values) => {
+            console.log(values);
           }}
         >
           {({
