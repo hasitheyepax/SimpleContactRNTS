@@ -7,6 +7,7 @@ export type ColorsType = {
   labelText: string;
   buttonBody: string;
   navigatorHeaderBackground: string;
+  disabledButtonBody: string;
 };
 
 export type Theme = {
@@ -27,6 +28,7 @@ const darkTheme: Theme = {
     labelText: "#f5fee6",
     buttonBody: "#0032d6",
     navigatorHeaderBackground: "#0032d6",
+    disabledButtonBody: "#5c80f5",
   },
   borderRadius: 5,
   verticalMargin: 10,
@@ -43,6 +45,7 @@ const lightTheme: Theme = {
     labelText: "#f5fee6",
     buttonBody: "#00a4ef",
     navigatorHeaderBackground: "#f8f8f8",
+    disabledButtonBody: "#46b7eb",
   },
   borderRadius: 5,
   verticalMargin: 10,

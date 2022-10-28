@@ -6,18 +6,19 @@ import { StyleSheet, Pressable, Text } from "react-native";
 interface buttonProps {
   label: string;
   onPress: Function;
+  disabled?: boolean;
 }
 
 const Button: FC<buttonProps> = (props): JSX.Element => {
-  const { label, onPress } = props;
+  const { label, onPress, disabled = false } = props;
 
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
 
   return (
     <Pressable
-      onPress={() => onPress()}
-      style={styles.button}
+      onPress={() => !disabled && onPress()}
+      style={disabled ? styles.disabledButton : styles.button}
       android_ripple={{
         color: theme.colors.card,
       }}
@@ -40,6 +41,13 @@ const themeStyles = (theme: Theme) =>
       fontSize: 20,
       fontWeight: "700",
       color: theme.colors.labelText,
+    },
+    disabledButton: {
+      backgroundColor: theme.colors.disabledButtonBody,
+      alignItems: "center",
+      justifyContent: "center",
+      height: 50,
+      borderRadius: theme.borderRadius,
     },
   });
 

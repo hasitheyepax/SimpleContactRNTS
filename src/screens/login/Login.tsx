@@ -1,10 +1,11 @@
-import React, { FC, useContext } from "react";
+import React, { FC, useContext, useRef } from "react";
 import {
   View,
   Text,
   StyleSheet,
   KeyboardAvoidingView,
   Platform,
+  TextInput,
 } from "react-native";
 import * as yup from "yup";
 import { Formik } from "formik";
@@ -31,6 +32,7 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
   const { navigation } = props;
   const { theme } = useContext(ThemeContext);
   const dispatch = useAppDispatch();
+  const passwordInputRef = useRef<TextInput>(null);
   const styles = themeStyles(theme);
 
   const handleRegisterPress: Function = () => {
@@ -56,6 +58,10 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
     }
   };
 
+  const handleEmailSubmitEditing = (): void => {
+    if (passwordInputRef.current) passwordInputRef.current.focus();
+  };
+
   return (
     <HideKeyboard>
       <View style={styles.pageContainer}>
@@ -68,6 +74,7 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
             password: "",
           }}
           validationSchema={validationSchema}
+          validateOnMount
           onSubmit={async ({ email, password }) => {
             const credentials: loginCredentialsType = {
               email,
@@ -84,11 +91,14 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
             handleBlur,
             touched,
             resetForm,
+            isValid,
+            validateForm,
           }) => (
             <>
               <KeyboardAvoidingView
                 behavior={Platform.OS === "ios" ? "padding" : "height"}
                 style={styles.inputContainer}
+                keyboardVerticalOffset={Platform.OS === "ios" ? 100 : -150}
               >
                 <InputField
                   label={"Email"}
@@ -99,6 +109,7 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
                   placeholder={"Your email address"}
                   onBlur={handleBlur("email")}
                   keyboardType={"email-address"}
+                  onSubmitEditing={handleEmailSubmitEditing}
                 />
                 <InputField
                   label={"Password"}
@@ -108,19 +119,26 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
                   error={touched.password ? errors.password : undefined}
                   placeholder={"Enter your password"}
                   onBlur={handleBlur("password")}
+                  onSubmitEditing={handleSubmit}
+                  innerRef={passwordInputRef}
                 />
+                <View style={styles.buttonContainer}>
+                  <Button
+                    label={"Login"}
+                    onPress={handleSubmit}
+                    disabled={!isValid}
+                  />
+                  <View style={styles.margin} />
+                  <Button
+                    label={"Register"}
+                    onPress={async () => {
+                      resetForm();
+                      await validateForm();
+                      handleRegisterPress();
+                    }}
+                  />
+                </View>
               </KeyboardAvoidingView>
-              <View style={styles.buttonContainer}>
-                <Button label={"Login"} onPress={handleSubmit} />
-                <View style={styles.margin} />
-                <Button
-                  label={"Register"}
-                  onPress={() => {
-                    resetForm();
-                    handleRegisterPress();
-                  }}
-                />
-              </View>
             </>
           )}
         </Formik>
@@ -138,7 +156,7 @@ const themeStyles = (theme: Theme) =>
       backgroundColor: theme.colors.background,
     },
     headerContainer: {
-      flex: 2,
+      flex: 1,
       justifyContent: "center",
       alignItems: "center",
       paddingTop: 40,
@@ -150,13 +168,11 @@ const themeStyles = (theme: Theme) =>
       color: theme.colors.text,
     },
     inputContainer: {
+      flex: 1,
       width: "85%",
       marginBottom: 40,
     },
-    buttonContainer: {
-      flex: 2,
-      width: "70%",
-    },
+    buttonContainer: {},
     margin: {
       height: theme.verticalMargin,
     },

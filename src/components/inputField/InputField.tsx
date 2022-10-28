@@ -1,4 +1,4 @@
-import React, { FC, useContext } from "react";
+import React, { FC, Ref, RefObject, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, KeyboardType } from "react-native";
 import { Theme } from "../../config/colors";
 import ThemeContext from "../../contexts/ThemeContext";
@@ -13,6 +13,8 @@ interface inputFieldProps {
   disableAutoCapitalize?: boolean;
   onBlur?: Function;
   keyboardType?: KeyboardType;
+  onSubmitEditing?: Function;
+  innerRef?: RefObject<TextInput>;
 }
 
 const InputField: FC<inputFieldProps> = (props): JSX.Element => {
@@ -26,6 +28,8 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
     disableAutoCapitalize = false,
     onBlur,
     keyboardType,
+    onSubmitEditing,
+    innerRef,
   } = props;
 
   const { theme } = useContext(ThemeContext);
@@ -48,6 +52,10 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
         }
         onBlur={(e) => onBlur?.(e)}
         keyboardType={keyboardType}
+        autoCorrect={false}
+        spellCheck={false}
+        onSubmitEditing={() => onSubmitEditing?.()}
+        ref={innerRef}
       />
     </View>
   );

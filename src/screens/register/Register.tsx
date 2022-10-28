@@ -1,9 +1,10 @@
-import { FC, useContext } from "react";
+import { FC, useContext, useRef } from "react";
 import {
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
+  TextInput,
   View,
 } from "react-native";
 import ThemeContext from "../../contexts/ThemeContext";
@@ -26,6 +27,10 @@ const Register: FC = (): JSX.Element => {
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
 
+  const emailInputRef = useRef<TextInput>(null);
+  const passwordInputRef = useRef<TextInput>(null);
+  const passwordVerifyInputRef = useRef<TextInput>(null);
+
   const handleUserRegistration = async (user: userType): Promise<void> => {
     const status = await registerUser(user);
     console.log(status);
@@ -35,6 +40,7 @@ const Register: FC = (): JSX.Element => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 70 : 50}
     >
       <ScrollView
         contentContainerStyle={styles.contentContainer}
@@ -48,6 +54,7 @@ const Register: FC = (): JSX.Element => {
             passwordVerify: "",
           }}
           validationSchema={validationSchema}
+          validateOnMount
           onSubmit={async (values) => {
             const user: userType = {
               name: values.name,
@@ -65,6 +72,7 @@ const Register: FC = (): JSX.Element => {
             handleSubmit,
             handleChange,
             touched,
+            isValid,
           }) => (
             <View style={styles.inputContainer}>
               <InputField
@@ -75,6 +83,7 @@ const Register: FC = (): JSX.Element => {
                 placeholder={"Your name"}
                 error={touched.name ? errors.name : undefined}
                 onBlur={handleBlur("name")}
+                onSubmitEditing={() => emailInputRef.current?.focus()}
               />
               <InputField
                 label={"Email"}
@@ -85,6 +94,8 @@ const Register: FC = (): JSX.Element => {
                 error={touched.email ? errors.email : undefined}
                 onBlur={handleBlur("email")}
                 keyboardType={"email-address"}
+                innerRef={emailInputRef}
+                onSubmitEditing={() => passwordInputRef.current?.focus()}
               />
               <InputField
                 label={"Password"}
@@ -94,6 +105,8 @@ const Register: FC = (): JSX.Element => {
                 placeholder={"Password"}
                 error={touched.password ? errors.password : undefined}
                 onBlur={handleBlur("password")}
+                innerRef={passwordInputRef}
+                onSubmitEditing={() => passwordVerifyInputRef.current?.focus()}
               />
               <InputField
                 label={"Verify Password"}
@@ -105,8 +118,13 @@ const Register: FC = (): JSX.Element => {
                   touched.passwordVerify ? errors.passwordVerify : undefined
                 }
                 onBlur={handleBlur("passwordVerify")}
+                innerRef={passwordVerifyInputRef}
               />
-              <Button label={"Register"} onPress={handleSubmit} />
+              <Button
+                label={"Register"}
+                onPress={handleSubmit}
+                disabled={!isValid || values.password !== values.passwordVerify}
+              />
             </View>
           )}
         </Formik>
