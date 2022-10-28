@@ -11,6 +11,9 @@ const SessionNavigator: FC = (): JSX.Element => {
       <Stack.Screen
         name={navigationScreens.SELECTOR}
         component={CoinSelector}
+        options={{
+          headerShown: false,
+        }}
       />
       <Stack.Screen name={navigationScreens.RATE} component={Rate} />
     </Stack.Navigator>

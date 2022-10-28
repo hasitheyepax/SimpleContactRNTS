@@ -7,6 +7,7 @@ import { useColorScheme } from "react-native";
 import { lightTheme, darkTheme } from "./src/config";
 import { Theme } from "./src/config/colors";
 import ThemeContext from "./src/contexts/ThemeContext";
+import Toast from "react-native-toast-message";
 
 const App = () => {
   const colorScheme = useColorScheme();
@@ -30,6 +31,7 @@ const App = () => {
           <PrimaryNavigator />
         </NavigationContainer>
       </ThemeContext.Provider>
+      <Toast />
     </Provider>
   );
 };

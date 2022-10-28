@@ -20,6 +20,7 @@ import { getUsers } from "../../helpers/asyncStorage";
 import { useAppDispatch } from "../../store/hooks";
 import { login } from "../../store/slices/authSlice";
 import { Base64 } from "js-base64";
+import Toast from "react-native-toast-message";
 
 const validationSchema = yup.object({
   email: yup.string().email().required("An email is needed"),
@@ -49,12 +50,25 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
         );
       });
       if (result.length > 0) {
+        Toast.show({
+          type: "success",
+          text1: "Open sesame!",
+          text2: "You may enter! 😎",
+        });
         dispatch(login());
       } else {
-        console.log("Not allowed");
+        Toast.show({
+          type: "error",
+          text1: "Invalid credentials!",
+          text2: "Check your email and password again! 🤨",
+        });
       }
     } else {
-      console.log("Register a user first");
+      Toast.show({
+        type: "error",
+        text1: "No registered users!",
+        text2: "Register yourself as a user first! 🤣",
+      });
     }
   };
 
