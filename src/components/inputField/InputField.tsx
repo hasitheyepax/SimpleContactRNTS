@@ -2,6 +2,7 @@ import React, { FC, Ref, RefObject, useContext } from "react";
 import { View, Text, TextInput, StyleSheet, KeyboardType } from "react-native";
 import { Theme } from "../../config/colors";
 import ThemeContext from "../../contexts/ThemeContext";
+import Animated, { useSharedValue } from "react-native-reanimated";
 
 interface inputFieldProps {
   label: string;
@@ -36,7 +37,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
   const styles = themeStyles(theme);
 
   return (
-    <View style={styles.container}>
+    <Animated.View style={styles.container}>
       <View style={styles.labelRow}>
         <Text style={styles.labelText}>{label}</Text>
         {error ? <Text style={styles.errorText}>{error}</Text> : undefined}
@@ -56,8 +57,11 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
         spellCheck={false}
         onSubmitEditing={() => onSubmitEditing?.()}
         ref={innerRef}
+        onFocus={() => {
+          console.log("Got em");
+        }}
       />
-    </View>
+    </Animated.View>
   );
 };
 
@@ -69,6 +73,8 @@ const themeStyles = (theme: Theme) =>
       marginBottom: 10,
       padding: 10,
       borderRadius: 5,
+      borderWidth: 1,
+      borderColor: theme.colors.labelText,
     },
     labelText: {
       color: theme.colors.labelText,
