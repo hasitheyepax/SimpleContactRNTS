@@ -40,7 +40,7 @@ const Register: FC = (): JSX.Element => {
     <KeyboardAvoidingView
       style={styles.container}
       behavior={Platform.OS === "ios" ? "padding" : "height"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 70 : 50}
+      // keyboardVerticalOffset={Platform.OS === "ios" ? 70 : 50}
     >
       <ScrollView
         contentContainerStyle={styles.contentContainer}

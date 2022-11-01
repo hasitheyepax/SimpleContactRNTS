@@ -1,8 +1,19 @@
 import React, { FC, Ref, RefObject, useContext } from "react";
-import { View, Text, TextInput, StyleSheet, KeyboardType } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  KeyboardType,
+  Platform,
+} from "react-native";
 import { Theme } from "../../config/colors";
 import ThemeContext from "../../contexts/ThemeContext";
-import Animated, { useSharedValue } from "react-native-reanimated";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+} from "react-native-reanimated";
 
 interface inputFieldProps {
   label: string;
@@ -36,45 +47,62 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
   const { theme } = useContext(ThemeContext);
   const styles = themeStyles(theme);
 
+  const animatedHeight = useSharedValue(70);
+
+  const animatedStyles = useAnimatedStyle(() => {
+    return {
+      height:
+        Platform.OS === "android"
+          ? animatedHeight.value + 20
+          : animatedHeight.value,
+    };
+  });
+
   return (
-    <Animated.View style={styles.container}>
-      <View style={styles.labelRow}>
-        <Text style={styles.labelText}>{label}</Text>
-        {error ? <Text style={styles.errorText}>{error}</Text> : undefined}
-      </View>
-      <TextInput
-        value={value}
-        onChangeText={(value) => onChangeText(value)}
-        secureTextEntry={isPassword}
-        style={styles.inputText}
-        placeholder={placeholder}
-        autoCapitalize={
-          disableAutoCapitalize || keyboardType ? "none" : "sentences"
-        }
-        onBlur={(e) => onBlur?.(e)}
-        keyboardType={keyboardType}
-        autoCorrect={false}
-        spellCheck={false}
-        onSubmitEditing={() => onSubmitEditing?.()}
-        ref={innerRef}
-        onFocus={() => {
-          console.log("Got em");
-        }}
-      />
+    <Animated.View style={[styles.topContainer, animatedStyles]}>
+      <Animated.View style={styles.container}>
+        <View style={styles.labelRow}>
+          <Text style={styles.labelText}>{label}</Text>
+          {error ? <Text style={styles.errorText}>{error}</Text> : undefined}
+        </View>
+        <TextInput
+          value={value}
+          onChangeText={(value) => onChangeText(value)}
+          secureTextEntry={isPassword}
+          style={styles.inputText}
+          placeholder={placeholder}
+          autoCapitalize={
+            disableAutoCapitalize || keyboardType ? "none" : "sentences"
+          }
+          onBlur={(e) => {
+            animatedHeight.value = withTiming(70);
+            onBlur?.(e);
+          }}
+          keyboardType={keyboardType}
+          autoCorrect={false}
+          spellCheck={false}
+          onSubmitEditing={() => onSubmitEditing?.()}
+          ref={innerRef}
+          onFocus={() => {
+            animatedHeight.value = withTiming(90);
+          }}
+        />
+      </Animated.View>
     </Animated.View>
   );
 };
 
 const themeStyles = (theme: Theme) =>
   StyleSheet.create({
-    container: {
+    topContainer: {
       backgroundColor: theme.colors.primary,
       width: "100%",
       marginBottom: 10,
-      padding: 10,
       borderRadius: 5,
-      borderWidth: 1,
-      borderColor: theme.colors.labelText,
+      justifyContent: "center",
+    },
+    container: {
+      margin: 10,
     },
     labelText: {
       color: theme.colors.labelText,
@@ -97,6 +125,7 @@ const themeStyles = (theme: Theme) =>
     labelRow: {
       flexDirection: "row",
       justifyContent: "space-between",
+      paddingTop: Platform.OS === "android" ? 15 : undefined,
     },
   });
 
