@@ -1,4 +1,4 @@
-import React, { FC, Ref, RefObject, useContext } from "react";
+import React, { FC, RefObject, useContext } from "react";
 import {
   View,
   Text,
@@ -60,7 +60,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
 
   return (
     <Animated.View style={[styles.topContainer, animatedStyles]}>
-      <Animated.View style={styles.container}>
+      <View style={styles.container}>
         <View style={styles.labelRow}>
           <Text style={styles.labelText}>{label}</Text>
           {error ? <Text style={styles.errorText}>{error}</Text> : undefined}
@@ -87,7 +87,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
             animatedHeight.value = withTiming(90);
           }}
         />
-      </Animated.View>
+      </View>
     </Animated.View>
   );
 };
