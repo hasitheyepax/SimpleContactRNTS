@@ -8,6 +8,7 @@ export type ColorsType = {
   buttonBody: string;
   navigatorHeaderBackground: string;
   disabledButtonBody: string;
+  cardBackground: string;
 };
 
 export type Theme = {
@@ -29,6 +30,7 @@ const darkTheme: Theme = {
     buttonBody: "#0032d6",
     navigatorHeaderBackground: "#0032d6",
     disabledButtonBody: "#5c80f5",
+    cardBackground: "#000000",
   },
   borderRadius: 5,
   verticalMargin: 10,
@@ -39,13 +41,14 @@ const lightTheme: Theme = {
   colors: {
     textSub: "#f8f8f8",
     primary: "#ef8f8f",
-    background: "#eddcc8",
+    background: "#a9fff7",
     card: "#0096FF",
     text: "#333",
     labelText: "#f5fee6",
     buttonBody: "#00a4ef",
     navigatorHeaderBackground: "#f8f8f8",
     disabledButtonBody: "#46b7eb",
+    cardBackground: "#F2D492",
   },
   borderRadius: 5,
   verticalMargin: 10,

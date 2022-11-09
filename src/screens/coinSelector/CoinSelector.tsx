@@ -6,6 +6,7 @@ import {
   FlatList,
   SafeAreaView,
   ActivityIndicator,
+  Image,
 } from "react-native";
 import React, { FC, useContext, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hooks";
@@ -37,8 +38,15 @@ const CoinSelector: FC = (): JSX.Element => {
 
   const _renderItem = (item: coinType, index: number) => {
     return (
-      <View>
-        <Text>{item.asset_id}</Text>
+      <View style={styles.renderComponentContainer}>
+        <View style={styles.textContainer}>
+          <Text style={styles.cardText}>{item.asset_id}</Text>
+        </View>
+        <View style={styles.imageContainer}>
+          <View style={styles.imageFrame}>
+            <Image source={{ uri: item.url }} style={styles.image} />
+          </View>
+        </View>
       </View>
     );
   };
@@ -53,6 +61,8 @@ const CoinSelector: FC = (): JSX.Element => {
     );
   };
 
+  const ItemSeparatorComponent = () => <View style={styles.itemSeparator} />;
+
   return (
     <SafeAreaView style={styles.container}>
       <FlatList
@@ -62,6 +72,7 @@ const CoinSelector: FC = (): JSX.Element => {
         ListEmptyComponent={ListEmptyComponent}
         style={styles.listStyle}
         contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={ItemSeparatorComponent}
       />
       <Pressable onPress={handleLogOut} style={styles.button}>
         <Text style={styles.buttonText}>Logout!</Text>
@@ -81,6 +92,8 @@ const themeStyles = (theme: Theme) =>
     listEmptyStyle: {
       backgroundColor: theme.colors.navigatorHeaderBackground,
       alignSelf: "center",
+      flex: 1,
+      justifyContent: "center",
     },
     listStyle: {
       flex: 1,
@@ -89,9 +102,7 @@ const themeStyles = (theme: Theme) =>
     },
     listContent: {
       backgroundColor: theme.colors.navigatorHeaderBackground,
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
+      padding: 10,
     },
     button: {
       backgroundColor: theme.colors.buttonBody,
@@ -101,6 +112,57 @@ const themeStyles = (theme: Theme) =>
     },
     buttonText: {
       color: theme.colors.labelText,
+    },
+    itemSeparator: {
+      marginVertical: 5,
+      height: 1,
+      backgroundColor: theme.colors.background,
+    },
+    renderComponentContainer: {
+      backgroundColor: theme.colors.cardBackground,
+      width: "100%",
+      height: 100,
+      borderRadius: theme.borderRadius,
+      padding: theme.verticalMargin,
+      flexDirection: "row",
+      alignItems: "center",
+      justifyContent: "space-around",
+    },
+    imageContainer: {
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    imageFrame: {
+      backgroundColor: "white",
+      height: 80,
+      width: 80,
+      justifyContent: "center",
+      alignItems: "center",
+      borderRadius: theme.borderRadius,
+    },
+    textContainer: {
+      // backgroundColor: "yellow",
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+    },
+    image: {
+      height: "auto",
+      width: 50,
+      aspectRatio: 1,
+    },
+    cardText: {
+      fontSize: 32,
+      fontWeight: "bold",
+      color: theme.colors.labelText,
+      shadowColor: "black",
+      shadowRadius: 1,
+      shadowOffset: {
+        width: 2,
+        height: 2,
+      },
+      shadowOpacity: 0.1,
     },
   });
 
