@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "948242154933",
+    "project_id": "coins-cc745",
+    "storage_bucket": "coins-cc745.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:948242154933:android:ef1b3b102bf332111a05fc",
+        "android_client_info": {
+          "package_name": "com.simplecontactrnts"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "948242154933-m8d93fv8507m66cos2th0gm1c939mtnh.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.simplecontactrnts",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "948242154933-7g4lbrf96ct3u4tir1kcr5lc3e3tifgu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCbQhvBRzZTzE7RDfl_X5ILoLu_lpu7MO4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "948242154933-7g4lbrf96ct3u4tir1kcr5lc3e3tifgu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
