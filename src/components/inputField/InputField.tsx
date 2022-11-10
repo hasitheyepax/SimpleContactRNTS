@@ -86,6 +86,7 @@ const InputField: FC<inputFieldProps> = (props): JSX.Element => {
           onFocus={() => {
             animatedHeight.value = withTiming(90);
           }}
+          textContentType={isPassword ? "oneTimeCode" : undefined}
         />
       </View>
     </Animated.View>

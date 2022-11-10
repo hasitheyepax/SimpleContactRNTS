@@ -40,6 +40,10 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
     navigation.navigate("REGISTER");
   };
 
+  const handleGoogleLogin: Function = () => {
+    console.log("Google Login");
+  };
+
   const handleLogin = async (credentials: loginCredentialsType) => {
     const users = await getUsers();
     if (users) {
@@ -141,6 +145,13 @@ const Login: FC<NativeStackScreenProps<AuthStackParamsList, "LOGIN">> = (
                     label={"Login"}
                     onPress={handleSubmit}
                     disabled={!isValid}
+                  />
+                  <View style={styles.margin} />
+                  <Button
+                    label={"Login with Google"}
+                    onPress={async () => {
+                      handleGoogleLogin();
+                    }}
                   />
                   <View style={styles.margin} />
                   <Button
